@@ -64,8 +64,6 @@ let approximateByNewton (f: float -> float) f' precision startingPoint =
 
 let approximateByModifiedNewton (f: float -> float) precision startingPoint f'OfStartingPoint =
     let rec helper startingPoint iterations =
-        printfn "Entered newton helper with point %e and iter %d" startingPoint iterations
-
         let newStartingPoint = startingPoint - ((f startingPoint) / f'OfStartingPoint)
         let difference = abs (newStartingPoint - startingPoint)
 

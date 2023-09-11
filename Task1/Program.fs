@@ -14,7 +14,7 @@ let f'' x = 2.0 - exp (-x)
 let difference = ((rightBound - leftBound) / intervalCount)
 let rootIntervals = separateRoots f leftBound rightBound difference
 
-let startingApproximations =
+let bisectionStartingApproximations =
     List.map (fun (leftBound, rightBound) -> (leftBound + rightBound) / 2.0) rootIntervals
 
 let bisectionApproximations =
@@ -27,7 +27,9 @@ let newtonApproximations =
     List.map (fun startingPoint -> approximateByNewton f f' epsilon startingPoint) newtonStartingApproximations
 
 let modifiedNewtonApproximations =
-    List.map (fun startingPoint -> approximateByNewton f f' epsilon startingPoint) newtonStartingApproximations
+    List.map
+        (fun startingPoint -> approximateByModifiedNewton f epsilon startingPoint (f' startingPoint))
+        newtonStartingApproximations
 
 let secantStartingApproximations =
     List.map (fun (leftBound, rightBound) -> secantApproximation f leftBound rightBound) rootIntervals
@@ -38,20 +40,32 @@ let secantApproximations =
 // Main execution
 printfn "Тема: ЧИСЛЕННЫЕ МЕТОДЫ РЕШЕНИЯ НЕЛИНЕЙНЫХ УРАВНЕНИЙ"
 printfn "Входные данные:"
-printfn "A = %e, B = %e, ε = %e, f(x) = (x-1)^2 - exp(-x)" leftBound rightBound epsilon
+printfn "A = %g, B = %g, ε = %g, f(x) = (x-1)^2 - exp(-x)" leftBound rightBound epsilon
 
-printfn "Для отделения корней использовались N = %e и h = %e" intervalCount difference
+printfn "Для отделения корней использовались N = %g и h = %g" intervalCount difference
 printfn "Найдено отрезков: %d" (List.length rootIntervals)
 List.iteri printNumberedPairsn rootIntervals
+printfn ""
 
-printfn "\nПри уточнении корней методом бисекции получены следующие результаты:"
-List.iteri2 printBisectionApproximationInfo startingApproximations bisectionApproximations
+for i = 0 to ((List.length rootIntervals) - 1) do
+    printfn "════════════════════════════════════════════════════════════════════════════════"
 
-printfn "\nПри уточнении корней методом Ньютона получены следующие результаты:"
-List.iteri2 printSequenceApproximationInfo newtonStartingApproximations newtonApproximations
+    printfn
+        "Уточним корни на отрезке №%d: [%f; %f]"
+        (i + 1)
+        (fst (List.item i rootIntervals))
+        (snd (List.item i rootIntervals))
 
-printfn "\nПри уточнении корней модифицированным методом Ньютона получены следующие результаты:"
-List.iteri2 printSequenceApproximationInfo newtonStartingApproximations modifiedNewtonApproximations
-
-printfn "\nПри уточнении корней методом секущих получены следующие результаты:"
-List.iteri2 printSequenceApproximationInfo secantStartingApproximations secantApproximations
+    printfn "────────────────────────────────────────────────────────────────────────────────"
+    printfn "При уточнении корней методом бисекции получены следующие результаты:"
+    printBisectionApproximationInfo (List.item i bisectionStartingApproximations) (List.item i bisectionApproximations)
+    printfn "────────────────────────────────────────────────────────────────────────────────"
+    printfn "При уточнении корней методом Ньютона получены следующие результаты:"
+    printSequenceApproximationInfo (List.item i newtonStartingApproximations) (List.item i newtonApproximations)
+    printfn "────────────────────────────────────────────────────────────────────────────────"
+    printfn "При уточнении корней модифицированным методом Ньютона получены следующие результаты:"
+    printSequenceApproximationInfo (List.item i newtonStartingApproximations) (List.item i modifiedNewtonApproximations)
+    printfn "────────────────────────────────────────────────────────────────────────────────"
+    printfn "При уточнении корней методом секущих получены следующие результаты:"
+    printSequenceApproximationInfo (List.item i secantStartingApproximations) (List.item i secantApproximations)
+    printfn "════════════════════════════════════════════════════════════════════════════════\n"
