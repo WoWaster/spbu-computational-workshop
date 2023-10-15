@@ -36,6 +36,8 @@ ghc-options:
   - -Wredundant-constraints
   - -fspecialise-aggressively
 
+language: GHC2021
+
 library:
   source-dirs: src
 

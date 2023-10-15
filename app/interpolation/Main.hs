@@ -32,13 +32,14 @@ main = do
     x <- inputDouble "Введите точку интерполяции x: "
     let fx = f x
     powerOfPoly <- inputPower numOfInterpolationPoints
-    let closestPoints = takeClosestPoints table x powerOfPoly
+    let closestPoints = sortPoints table x
     pPrint closestPoints
-    let lagrangePoly = polynomialLagrange f numOfInterpolationPoints closestPoints
+    let lagrangePoly =
+            polynomialLagrange (powerOfPoly + 1) closestPoints
     let lagrangeX = lagrangePoly x
     printf "\nP^L_%d(%f) = %f\n" powerOfPoly x lagrangeX
     printf "|f(%f) - P^L_%d(%f)| = %0f\n" x powerOfPoly x $ abs (fx - lagrangeX)
-    let newtonPoly = polynomialNewton f numOfInterpolationPoints closestPoints
+    let newtonPoly = polynomialNewton (powerOfPoly + 1) closestPoints
     let newtonX = newtonPoly x
     printf "\nP^N_%d(%f) = %f\n" powerOfPoly x newtonX
     printf "|f(%f) - P^N_%d(%f)| = %0f\n" x powerOfPoly x $ abs (fx - newtonX)

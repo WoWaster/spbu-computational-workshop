@@ -38,7 +38,8 @@ library
       base >=4.7 && <5
     , numbers
     , pretty-simple
-  default-language: Haskell2010
+  default-language: GHC2021
+  default-language: GHC2021
 
 executable interpolation
   main-is: Main.hs
@@ -52,7 +53,7 @@ executable interpolation
     , numbers
     , pretty-simple
     , spbu-computational-workshop
-  default-language: Haskell2010
+  default-language: GHC2021
 
 test-suite spbu-computational-workshop-test
   type: exitcode-stdio-1.0
@@ -67,4 +68,4 @@ test-suite spbu-computational-workshop-test
     , numbers
     , pretty-simple
     , spbu-computational-workshop
-  default-language: Haskell2010
+  default-language: GHC2021
