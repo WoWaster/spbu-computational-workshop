@@ -61,6 +61,16 @@ executables:
       - -with-rtsopts=-N
     dependencies:
       - spbu-computational-workshop
+  numericalDifferentiation:
+    main: Main.hs
+    source-dirs: app/numericalDifferentiation
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - spbu-computational-workshop
+
 tests:
   spbu-computational-workshop-test:
     main: Spec.hs
