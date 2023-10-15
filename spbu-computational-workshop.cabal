@@ -38,7 +38,22 @@ library
       base >=4.7 && <5
     , numbers
     , pretty-simple
+    , table-layout
   default-language: GHC2021
+
+executable backwardInterpolation
+  main-is: Main.hs
+  other-modules:
+      Paths_spbu_computational_workshop
+  hs-source-dirs:
+      app/backwardInterpolation
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -fspecialise-aggressively -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , numbers
+    , pretty-simple
+    , spbu-computational-workshop
+    , table-layout
   default-language: GHC2021
 
 executable interpolation
@@ -53,6 +68,7 @@ executable interpolation
     , numbers
     , pretty-simple
     , spbu-computational-workshop
+    , table-layout
   default-language: GHC2021
 
 test-suite spbu-computational-workshop-test
@@ -68,4 +84,5 @@ test-suite spbu-computational-workshop-test
     , numbers
     , pretty-simple
     , spbu-computational-workshop
+    , table-layout
   default-language: GHC2021

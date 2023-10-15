@@ -23,6 +23,7 @@ dependencies:
   - base >= 4.7 && < 5
   - pretty-simple
   - numbers
+  - table-layout
 
 ghc-options:
   - -Wall
@@ -51,7 +52,15 @@ executables:
       - -with-rtsopts=-N
     dependencies:
       - spbu-computational-workshop
-
+  backwardInterpolation:
+    main: Main.hs
+    source-dirs: app/backwardInterpolation
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - spbu-computational-workshop
 tests:
   spbu-computational-workshop-test:
     main: Spec.hs

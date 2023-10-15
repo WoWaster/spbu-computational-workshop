@@ -5,6 +5,10 @@ module RootFinder (
     approximateByModifiedNewton,
     approximateBySecant,
     MyResult,
+    root,
+    delta,
+    discrepancy,
+    counter,
 ) where
 
 -- This file is made by @KubEf with small modifications by me

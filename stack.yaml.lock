@@ -3,7 +3,18 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    commit: d2390efc1dcd2d915ef6a7e79cc154f8a7f2d060
+    git: https://github.com/Xitian9/table-layout.git
+    name: table-layout
+    pantry-tree:
+      sha256: d0a381b1307f668b1291b40d9eeb787f6ab78ac689c5aada4857cd8d277e22b9
+      size: 2625
+    version: 0.9.1.0
+  original:
+    commit: d2390efc1dcd2d915ef6a7e79cc154f8a7f2d060
+    git: https://github.com/Xitian9/table-layout.git
 snapshots:
 - completed:
     sha256: 1d663bec402f77fa09fa3e8cf288c3c7eb18a1f28a5e0c331ac47adeacd21346
