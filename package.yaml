@@ -22,7 +22,6 @@ description: Please see the README on GitHub at <https://github.com/WoWaster/spb
 dependencies:
   - base >= 4.7 && < 5
   - pretty-simple
-  - poly
   - numbers
 
 ghc-options:
@@ -36,7 +35,6 @@ ghc-options:
   - -Wpartial-fields
   - -Wredundant-constraints
   - -fspecialise-aggressively
-  - -O2
 
 library:
   source-dirs: src

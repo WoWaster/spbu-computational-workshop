@@ -1,8 +1,5 @@
-{-# LANGUAGE OverloadedLists #-}
-
 module Main (main) where
 
-import Data.Poly (eval)
 import Input
 import Interpolation
 import Text.Pretty.Simple
@@ -37,15 +34,11 @@ main = do
     powerOfPoly <- inputPower numOfInterpolationPoints
     let closestPoints = takeClosestPoints table x powerOfPoly
     pPrint closestPoints
-    let lagrangePoly = makeLagrangePoly closestPoints
-    let lagrangeX = eval1 lagrangePoly x
-    -- putStrLn ""
-    -- pPrint lagrangePoly
+    let lagrangePoly = polynomialLagrange f numOfInterpolationPoints closestPoints
+    let lagrangeX = lagrangePoly x
     printf "\nP^L_%d(%f) = %f\n" powerOfPoly x lagrangeX
     printf "|f(%f) - P^L_%d(%f)| = %0f\n" x powerOfPoly x $ abs (fx - lagrangeX)
-    let newtonPoly = makeNewtonPoly closestPoints
-    let newtonX = eval newtonPoly x
-    -- putStrLn ""
-    -- pPrint newtonPoly
+    let newtonPoly = polynomialNewton f numOfInterpolationPoints closestPoints
+    let newtonX = newtonPoly x
     printf "\nP^N_%d(%f) = %f\n" powerOfPoly x newtonX
     printf "|f(%f) - P^N_%d(%f)| = %0f\n" x powerOfPoly x $ abs (fx - newtonX)

@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.2.
+-- This file has been generated from package.yaml by hpack version 0.36.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -28,15 +28,15 @@ library
       Input
       Interpolation
       Lib
+      RootFinder
   other-modules:
       Paths_spbu_computational_workshop
   hs-source-dirs:
       src
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -fspecialise-aggressively -O2
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -fspecialise-aggressively
   build-depends:
       base >=4.7 && <5
     , numbers
-    , poly
     , pretty-simple
   default-language: Haskell2010
 
@@ -46,11 +46,10 @@ executable interpolation
       Paths_spbu_computational_workshop
   hs-source-dirs:
       app/interpolation
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -fspecialise-aggressively -O2 -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -fspecialise-aggressively -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
     , numbers
-    , poly
     , pretty-simple
     , spbu-computational-workshop
   default-language: Haskell2010
@@ -62,11 +61,10 @@ test-suite spbu-computational-workshop-test
       Paths_spbu_computational_workshop
   hs-source-dirs:
       test
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -fspecialise-aggressively -O2 -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -fspecialise-aggressively -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
     , numbers
-    , poly
     , pretty-simple
     , spbu-computational-workshop
   default-language: Haskell2010
