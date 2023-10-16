@@ -14,8 +14,10 @@ inputPower m = do
     n <- inputInt "Введите степень интерполяционного многочлена n: "
     if n > (m - 1)
         then do
-            putStrLn
-                "Степень интерполяционного многочлена не может быть больше m!"
+            putStrLn $
+                "Степень интерполяционного многочлена не может быть больше "
+                    ++ show (m - 1)
+                    ++ "!"
             inputPower m
         else return n
 
@@ -44,6 +46,7 @@ main = do
     let reversedClosestPoints = sortPoints reversedTable fx
     let lagrangePolyFst = polynomialLagrange (powerOfPoly + 1) reversedClosestPoints
     let foundXFst = lagrangePolyFst fx
+    putStrLn "Первый способ (\"переворот\" таблицы):"
     putStrLn $ "Искомый X = " ++ show foundXFst
     putStrLn $ "|f(X) - F| = " ++ show (abs (f foundXFst - fx))
     -- Second method
@@ -55,12 +58,13 @@ main = do
                 leftBound
                 rightBound
                 lagrangePolySnd
-                ((rightBound - leftBound) / 1e3)
+                1e3
     let roots =
             map
-                (\(a, b) -> approximateByBisection a b lagrangePolySnd epsilon 0)
+                (\(a, b) -> approximateBySecant a b lagrangePolySnd epsilon)
                 rootIntervals
-    putStrLn $ "Найдено корней: " ++ show (length roots)
+    putStrLn "Второй способ (поиск корней интерполяционного многочлена):"
+    -- putStrLn $ "Найдено корней: " ++ show (length roots)
     mapM_
         ( \res ->
             putStrLn $
