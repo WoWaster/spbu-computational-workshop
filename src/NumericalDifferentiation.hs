@@ -11,8 +11,10 @@ data DifferentiationResult = DifferentiationResult
     , fxi :: Double
     , f'xiNum :: Double
     , difff'xiActAndNum :: Double
+    , relDifff'xiActAndNum :: Double
     , f''xiNum :: Maybe Double
     , difff''xiActAndNum :: Maybe Double
+    , relDifff''xiActAndNum :: Maybe Double
     }
 
 genTable :: (Double -> Double) -> Int -> Double -> Double -> [(Double, Double)]
@@ -56,8 +58,8 @@ calculateF'' table h = helper 0 table
         | counter == 0 = Nothing : helper 1 table'
         | counter == len - 1 = [Nothing]
         | otherwise = case table' of
-            t@[x, _, z] -> Just (fstDerivativeMiddlePoint x z h) : helper (counter + 1) t
-            (x : y : z : t) -> Just (fstDerivativeMiddlePoint x z h) : helper (counter + 1) (y : z : t)
+            t@[x, y, z] -> Just (sndDerivativeMiddlePoint x y z h) : helper (counter + 1) t
+            (x : y : z : t) -> Just (sndDerivativeMiddlePoint x y z h) : helper (counter + 1) (y : z : t)
             _ -> error "Необходимо хотя бы 3 точки в таблице!"
 
     len = length table
@@ -69,14 +71,17 @@ makeResult f' f'' table h =
             <*> ZipList fxis
             <*> ZipList f'xisN
             <*> ZipList difff's
+            <*> ZipList relDifff's
             <*> ZipList f''xisN
             <*> ZipList difff''s
+            <*> ZipList relDifff''s
   where
     xis = map fst table
     fxis = map snd table
     f'xisN = calculateF' fxis h
     f'xisR = map f' xis
     difff's = zipWith (\real num -> abs $ real - num) f'xisR f'xisN
+    relDifff's = zipWith (\diff real -> diff / abs real) difff's f'xisR
     f''xisN = calculateF'' fxis h
     f''xisR = map f'' xis
     difff''s =
@@ -87,3 +92,11 @@ makeResult f' f'' table h =
             )
             f''xisR
             f''xisN
+    relDifff''s =
+        zipWith
+            ( \diff real -> case diff of
+                Nothing -> Nothing
+                Just d -> Just $ d / abs real
+            )
+            difff''s
+            f''xisR
