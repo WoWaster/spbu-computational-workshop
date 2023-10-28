@@ -5,8 +5,6 @@ module Main (main) where
 import Input
 import NumericalDifferentiation
 import Text.Layout.Table
-import Text.Pretty.Simple
-import Text.Printf
 
 f :: Double -> Double
 f x = exp $ 1.5 * x
@@ -17,12 +15,7 @@ f' x = 1.5 * exp (1.5 * x)
 f'' :: Double -> Double
 f'' x = 2.25 * exp (1.5 * x)
 
-prettyTable :: (Show a1, Show a2) => [(a1, a2)] -> String
-prettyTable table =
-    tableString $
-        columnHeaderTableS [numCol, numCol] unicodeRoundS (titlesH ["x", "f(x)"]) $
-            map (\(x, fx) -> rowG [show x, show fx]) table
-
+prettyResultTable :: [DifferentiationResult] -> String
 prettyResultTable diffs =
     tableString
         $ columnHeaderTableS

@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
+
 module RootFinder (
     separateRoots,
     approximateByBisection,
@@ -19,6 +21,8 @@ data MyResult = MyResult
     , counter :: Int
     }
 
+findNewtonStartingPoints ::
+    (Ord p, Ord a, Fractional a, Num p) => (p -> a) -> (p -> a) -> p -> p -> p -> p
 findNewtonStartingPoints f f'' leftBound rightBound precision =
     helper leftBound
   where

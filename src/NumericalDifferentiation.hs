@@ -64,6 +64,12 @@ calculateF'' table h = helper 0 table
 
     len = length table
 
+makeResult ::
+    (Double -> Double) ->
+    (Double -> Double) ->
+    [(Double, Double)] ->
+    Double ->
+    [DifferentiationResult]
 makeResult f' f'' table h =
     getZipList $
         DifferentiationResult
