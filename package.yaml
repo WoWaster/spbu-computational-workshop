@@ -42,41 +42,34 @@ language: GHC2021
 library:
   source-dirs: src
 
+_exe-ghc-options: &exe-ghc-options
+  - -threaded
+  - -rtsopts
+  - -with-rtsopts=-N
+
 executables:
   interpolation:
     main: Main.hs
     source-dirs: app/interpolation
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
+    ghc-options: *exe-ghc-options
     dependencies:
       - spbu-computational-workshop
   backwardInterpolation:
     main: Main.hs
     source-dirs: app/backwardInterpolation
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
+    ghc-options: *exe-ghc-options
     dependencies:
       - spbu-computational-workshop
   numericalDifferentiation:
     main: Main.hs
     source-dirs: app/numericalDifferentiation
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
+    ghc-options: *exe-ghc-options
     dependencies:
       - spbu-computational-workshop
   basicIntegration:
     main: Main.hs
     source-dirs: app/basicIntegration
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
+    ghc-options: *exe-ghc-options
     dependencies:
       - spbu-computational-workshop
 
