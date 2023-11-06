@@ -72,6 +72,12 @@ executables:
     ghc-options: *exe-ghc-options
     dependencies:
       - spbu-computational-workshop
+  compoundIntegration:
+    main: Main.hs
+    source-dirs: app/compoundIntegration
+    ghc-options: *exe-ghc-options
+    dependencies:
+      - spbu-computational-workshop
 
 tests:
   spbu-computational-workshop-test:

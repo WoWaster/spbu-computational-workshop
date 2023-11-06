@@ -6,6 +6,15 @@ module Integration (
     simpsonsRule,
     threeEightsRule,
     exactIntegral,
+    genPoints,
+    findW,
+    findQ,
+    findZ,
+    leftRuleComposite,
+    rightRuleComposite,
+    midpointRuleComposite,
+    trapezoidalRuleCompound,
+    simpsonsRuleCompound,
 ) where
 
 leftRule :: (Floating t) => (t -> t) -> t -> t -> t
@@ -39,3 +48,40 @@ threeEightsRule f leftBound rightBound =
 
 exactIntegral :: (Floating t) => (t -> t) -> t -> t -> t
 exactIntegral fBig leftBound rightBound = fBig rightBound - fBig leftBound
+
+genPoints :: (Floating t) => t -> t -> Int -> ([t], t)
+genPoints leftBound rightBound nOfPoints =
+    ( [leftBound + fromIntegral i * difference | i <- [0 .. nOfPoints]]
+    , difference
+    )
+  where
+    difference = (rightBound - leftBound) / fromIntegral nOfPoints
+
+findW :: (Floating t) => (t -> t) -> [t] -> t
+findW _ [] = error "Количество точек не может быть меньше двух!"
+findW _ [_] = error "Количество точек не может быть меньше двух!"
+findW f (_ : points) = sum $ map f $ init points
+
+findQ :: (Fractional t) => (t -> t) -> t -> [t] -> t
+findQ _ _ [] = error "Количество точек не может быть меньше одной!"
+findQ f difference points = sum $ map (\x -> f (x + difference / 2)) $ init points
+
+findZ :: (Floating t) => (t -> t) -> [t] -> t
+findZ _ [] = error "Количество точек не может быть меньше двух!"
+findZ _ [_] = error "Количество точек не может быть меньше двух!"
+findZ f points = f (head points) + f (last points)
+
+leftRuleComposite :: (Floating t) => t -> t -> t -> t
+leftRuleComposite fZero difference w = difference * (fZero + w)
+
+rightRuleComposite :: (Floating t) => t -> t -> t -> t
+rightRuleComposite fLast difference w = difference * (w + fLast)
+
+midpointRuleComposite :: (Floating t) => t -> t -> t
+midpointRuleComposite difference q = difference * q
+
+trapezoidalRuleCompound :: (Floating t) => t -> t -> t -> t
+trapezoidalRuleCompound difference w z = difference / 2 * (z + 2 * w)
+
+simpsonsRuleCompound :: (Floating t) => t -> t -> t -> t -> t
+simpsonsRuleCompound difference w q z = difference / 6 * (z + 2 * w + 4 * q)
