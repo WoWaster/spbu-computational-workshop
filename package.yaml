@@ -42,48 +42,34 @@ language: GHC2021
 library:
   source-dirs: src
 
-_exe-ghc-options: &exe-ghc-options
-  - -threaded
-  - -rtsopts
-  - -with-rtsopts=-N
+_exe-keys: &exe-keys
+  main: Main.hs
+  ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+  dependencies:
+    - spbu-computational-workshop
 
 executables:
   interpolation:
-    main: Main.hs
+    <<: *exe-keys
     source-dirs: app/interpolation
-    ghc-options: *exe-ghc-options
-    dependencies:
-      - spbu-computational-workshop
   backwardInterpolation:
-    main: Main.hs
+    <<: *exe-keys
     source-dirs: app/backwardInterpolation
-    ghc-options: *exe-ghc-options
-    dependencies:
-      - spbu-computational-workshop
   numericalDifferentiation:
-    main: Main.hs
+    <<: *exe-keys
     source-dirs: app/numericalDifferentiation
-    ghc-options: *exe-ghc-options
-    dependencies:
-      - spbu-computational-workshop
   basicIntegration:
-    main: Main.hs
+    <<: *exe-keys
     source-dirs: app/basicIntegration
-    ghc-options: *exe-ghc-options
-    dependencies:
-      - spbu-computational-workshop
   compoundIntegration:
-    main: Main.hs
+    <<: *exe-keys
     source-dirs: app/compoundIntegration
-    ghc-options: *exe-ghc-options
-    dependencies:
-      - spbu-computational-workshop
   rungeMethod:
-    main: Main.hs
+    <<: *exe-keys
     source-dirs: app/rungeMethod
-    ghc-options: *exe-ghc-options
-    dependencies:
-      - spbu-computational-workshop
 
 tests:
   spbu-computational-workshop-test:
