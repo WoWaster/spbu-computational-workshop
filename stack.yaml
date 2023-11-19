@@ -40,8 +40,7 @@ packages:
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
 extra-deps:
-  - git: https://github.com/Xitian9/table-layout.git
-    commit: d2390efc1dcd2d915ef6a7e79cc154f8a7f2d060
+  - table-layout-1.0.0.0
 # Override default flag values for local packages and extra-deps
 # flags: {}
 

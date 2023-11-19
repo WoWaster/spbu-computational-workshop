@@ -5,16 +5,12 @@
 
 packages:
 - completed:
-    commit: d2390efc1dcd2d915ef6a7e79cc154f8a7f2d060
-    git: https://github.com/Xitian9/table-layout.git
-    name: table-layout
+    hackage: table-layout-1.0.0.0@sha256:dc135515fac3c91bed5e628df0f4297ed91aff5e7388f6ddaf5be4b08cd6d557,7889
     pantry-tree:
-      sha256: d0a381b1307f668b1291b40d9eeb787f6ab78ac689c5aada4857cd8d277e22b9
-      size: 2625
-    version: 0.9.1.0
+      sha256: 616b68369f932c20649f59f4f72235128e5f3fca71ba7e9bbbd2cd9fb0514224
+      size: 2547
   original:
-    commit: d2390efc1dcd2d915ef6a7e79cc154f8a7f2d060
-    git: https://github.com/Xitian9/table-layout.git
+    hackage: table-layout-1.0.0.0
 snapshots:
 - completed:
     sha256: 7d4b649cf368f9076d8aa049aa44efe58950971d105892734e9957b2a26a2186
