@@ -78,6 +78,12 @@ executables:
     ghc-options: *exe-ghc-options
     dependencies:
       - spbu-computational-workshop
+  rungeMethod:
+    main: Main.hs
+    source-dirs: app/rungeMethod
+    ghc-options: *exe-ghc-options
+    dependencies:
+      - spbu-computational-workshop
 
 tests:
   spbu-computational-workshop-test:

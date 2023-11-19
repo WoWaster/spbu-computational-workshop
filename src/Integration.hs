@@ -15,6 +15,7 @@ module Integration (
     midpointRuleComposite,
     trapezoidalRuleCompound,
     simpsonsRuleCompound,
+    rungeMethod,
 ) where
 
 leftRule :: (Floating t) => (t -> t) -> t -> t -> t
@@ -85,3 +86,10 @@ trapezoidalRuleCompound difference w z = difference / 2 * (z + 2 * w)
 
 simpsonsRuleCompound :: (Floating t) => t -> t -> t -> t -> t
 simpsonsRuleCompound difference w q z = difference / 6 * (z + 2 * w + 4 * q)
+
+rungeMethod :: (Floating t, Integral p) => t -> t -> p -> p -> t
+rungeMethod valueH valueHl degree multiplier =
+    (fromIntegral multiplier ** r * valueHl - valueH)
+        / (fromIntegral multiplier ** r - 1)
+  where
+    r = fromIntegral degree + 1
