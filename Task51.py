@@ -75,6 +75,7 @@ def print_results_int_quad() -> None:
 
     precise_f = integrate.quad(lambda x: rho(x) * f(x), left_bound, right_bound)
     i_quad_f = create_interpolating_quadrature(left_bound, right_bound, n, f, rho)
+    print(f"{40*'-'}")
     quad_max_alg_acc = create_quadrature_max_algebraic_accuracy(
         left_bound, right_bound, n, f, rho
     )
@@ -94,6 +95,7 @@ def print_results_int_quad() -> None:
     i_quad_n = create_interpolating_quadrature(
         left_bound, right_bound, n, lambda x: x ** (n - 1), rho
     )
+    print(f"{40*'-'}")
     quad_max_alg_acc_n = create_quadrature_max_algebraic_accuracy(
         left_bound, right_bound, n, lambda x: x ** (n - 1), rho
     )
@@ -102,8 +104,32 @@ def print_results_int_quad() -> None:
     table_n.field_names = ["Метод", "Значение", "Погрешность"]
     table_n.add_row(["Точное значение (SciPy)", precise_n[0], precise_n[1]])
     table_n.add_row(["ИКФ", i_quad_n, abs(i_quad_n - precise_n[0])])
-    table_n.add_row(["КФНАСТ", quad_max_alg_acc_n, abs(quad_max_alg_acc_n - precise_n[0])])
+    table_n.add_row(
+        ["КФНАСТ", quad_max_alg_acc_n, abs(quad_max_alg_acc_n - precise_n[0])]
+    )
     print(table_n)
+
+    print(f"{80*'='}")
+    print(f"f(x) = x^{2*n - 1}")
+    precise_2n = integrate.quad(
+        lambda x: rho(x) * (x ** (2 * n - 1)), left_bound, right_bound
+    )
+    i_quad_2n = create_interpolating_quadrature(
+        left_bound, right_bound, n, lambda x: x ** (2 * n - 1), rho
+    )
+    print(f"{40*'-'}")
+    quad_max_alg_acc_2n = create_quadrature_max_algebraic_accuracy(
+        left_bound, right_bound, n, lambda x: x ** (2 * n - 1), rho
+    )
+
+    table_2n = PrettyTable()
+    table_2n.field_names = ["Метод", "Значение", "Погрешность"]
+    table_2n.add_row(["Точное значение (SciPy)", precise_2n[0], precise_2n[1]])
+    table_2n.add_row(["ИКФ", i_quad_2n, abs(i_quad_2n - precise_2n[0])])
+    table_2n.add_row(
+        ["КФНАСТ", quad_max_alg_acc_2n, abs(quad_max_alg_acc_2n - precise_2n[0])]
+    )
+    print(table_2n)
     print("Хотите повторить с другими данными?")
     again = input("[Да, да, д, y, yes], чтобы продолжить: ")
     if again in ["Да", "да", "д", "y", "yes"]:
