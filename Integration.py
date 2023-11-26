@@ -1,6 +1,6 @@
 from typing import Callable
 from scipy import integrate, linalg
-import numpy
+from numpy.polynomial import Polynomial
 
 
 def generate_points(
@@ -23,6 +23,7 @@ def create_quadrature_max_algebraic_accuracy(
     f: Callable[[float], float],
     rho: Callable[[float], float],
 ) -> float:
+    print("Вычисление КФНАСТ")
     mus = list(
         map(
             lambda x: integrate.quad(x, left_bound, right_bound)[0],
@@ -39,20 +40,15 @@ def create_quadrature_max_algebraic_accuracy(
     mu_matrix = [mus_all[i:n_of_points + i] for i in range(n_of_points)]
     minus_mus_add = list(map(lambda x: (-1) * x, mus_add))
     coefficients = list(map(float, linalg.solve(mu_matrix, minus_mus_add)))
+    omega = Polynomial(coefficients + [1])
 
     print("Найденные моменты весовой функции:")
     for i, mu in enumerate(mus_all):
         print(f"μ_{i} = {mu}")
 
-    print("Найденный ортогональный многочлен\n w = ", end='')
-    for i, a in enumerate(coefficients):
-        if i == 0:
-            print(f"{a} + ", end='')
-        else:
-            print(f"x^{i}*{a} + ", end='')
-    print(f"x^{n_of_points}")
+    print(f"Найденный ортогональный многочлен\nω = {omega}")
 
-    xs = list(map(float, numpy.roots(coefficients + [1])))
+    xs = omega.roots()
     print("Найденные узлы:")
     for i, x in enumerate(xs):
         print(f"x_{i} = {x}")
@@ -75,6 +71,7 @@ def create_interpolating_quadrature(
     f: Callable[[float], float],
     rho: Callable[[float], float],
 ) -> float:
+    print("Вычисление ИКФ")
     difference, xs = generate_points(left_bound, right_bound, n_of_points)
     print("Используемые узлы:")
     for i, x in enumerate(xs):
