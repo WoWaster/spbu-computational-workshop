@@ -63,7 +63,7 @@ def print_results_int_quad() -> None:
         "Точности (КФ НАСТ)"
     )
     left_bound = input_float("Введите левую границу интегрирования: ")
-    right_bound = input_float("Введите левую границу интегрирования: ")
+    right_bound = input_float("Введите правую границу интегрирования: ")
     n = input_int("Введите количество точек для построения КФ: ")
 
     if n < 2:
