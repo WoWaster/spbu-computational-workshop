@@ -1,6 +1,7 @@
-from typing import Callable
+from typing import Callable, Any
 from scipy import integrate, linalg
 from numpy.polynomial import Polynomial
+import numpy.typing as npt
 
 
 def generate_points(
@@ -32,12 +33,12 @@ def create_quadrature_max_algebraic_accuracy(
     )
     mus_add = list(
         map(
-            lambda x: integrate.quad(x, left_bound, right_bound)[0],
+            lambda x: integrate.qTaskjuad(x, left_bound, right_bound)[0],
             [generate_mu_n(rho, i) for i in range(n_of_points, 2 * n_of_points)],
         )
     )
     mus_all = mus + mus_add
-    mu_matrix = [mus_all[i:n_of_points + i] for i in range(n_of_points)]
+    mu_matrix = [mus_all[i : n_of_points + i] for i in range(n_of_points)]
     minus_mus_add = list(map(lambda x: (-1) * x, mus_add))
     coefficients = list(map(float, linalg.solve(mu_matrix, minus_mus_add)))
     omega = Polynomial(coefficients + [1])
@@ -53,9 +54,7 @@ def create_quadrature_max_algebraic_accuracy(
     for i, x in enumerate(xs):
         print(f"x_{i} = {x}")
 
-    xs_matrix = [
-        list(map(lambda elem: elem**i, xs)) for i in range(n_of_points)
-    ]
+    xs_matrix = [list(map(lambda elem: elem**i, xs)) for i in range(n_of_points)]
     a_s = linalg.solve(xs_matrix, mus)
     print("Найденные коэффициенты КФНАСТ:")
     for i, a in enumerate(a_s):
@@ -95,3 +94,50 @@ def create_interpolating_quadrature(
         print(f"A_{i} = {a}")
 
     return sum(map(lambda ax: ax[0] * f(ax[1]), zip(a_s, xs)))
+
+
+def generate_legendre_polys(n: int) -> list[Polynomial]:
+    polys = [Polynomial([1]), Polynomial([0, 1])]
+    if n == 0:
+        return polys[:1]
+    elif n == 1:
+        return polys
+    else:
+        for i in range(2, n + 1):
+            p_i = (2 * i - 1) / i * Polynomial([0, 1]) * polys[i - 1] - (
+                i - 1
+            ) / i * polys[i - 2]
+            polys.append(p_i)
+    return polys
+
+
+def generate_gauss_coefficients(
+    n: int,
+    left_bound: float,
+    right_bound: float,
+    poly: Polynomial,
+    roots: npt.NDArray[Any],
+) -> list[float]:
+    coefficients: list[float] = []
+    for i, root in enumerate(roots):
+        c = 2 * (1 - root**2) / n**2 / (poly(root) ** 2)
+        coefficients.append((right_bound - left_bound) / 2 * c)
+    return coefficients
+
+
+def calculate_gauss(
+    n: int, left_bound: float, right_bound: float, f: Callable[[float], float]
+) -> float:
+    polys = generate_legendre_polys(n)
+    roots = polys[n].roots()
+    coefficients = generate_gauss_coefficients(
+        n, left_bound, right_bound, polys[n - 1], roots
+    )
+    points = map(
+        lambda t: (right_bound - left_bound) / 2 * t + (left_bound + right_bound) / 2,
+        roots,
+    )
+    val = 0
+    for c, x in zip(coefficients, points):
+        val += c * f(x)
+    return val
