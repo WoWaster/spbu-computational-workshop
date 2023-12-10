@@ -53,32 +53,42 @@ def test_canonical_gauss() -> None:
 def integrate_gauss(f: Callable[[float], float], ns: list[int]) -> None:
     print("Вычисление интеграла от f(x) = sqrt(x) * cos(x^2)", end="\n\n")
 
-    left_bound = input_float("Введите левую границу интегрирования: ")
-    right_bound = input_float("Введите правую границу интегрирования: ")
+    is_running = True
 
-    real_val = integrate.quad(f, left_bound, right_bound)
+    while is_running:
+        left_bound = input_float("Введите левую границу интегрирования: ")
+        right_bound = input_float("Введите правую границу интегрирования: ")
 
-    for i in ns:
-        polys = generate_legendre_polys(i)
-        roots = polys[i].roots()
-        coefficients = generate_gauss_coefficients(
-            i, left_bound, right_bound, polys[i - 1], roots
+        real_val = integrate.quad(f, left_bound, right_bound)
+
+        for i in ns:
+            polys = generate_legendre_polys(i)
+            roots = polys[i].roots()
+            coefficients = generate_gauss_coefficients(
+                i, left_bound, right_bound, polys[i - 1], roots
+            )
+            points = map(
+                lambda t: (right_bound - left_bound) / 2 * t
+                + (left_bound + right_bound) / 2,
+                roots,
+            )
+
+            gauss_val = calculate_gauss(i, left_bound, right_bound, f)
+            table = PrettyTable()
+            table.field_names = ["Метод", "Значение", "Погрешность"]
+            table.add_row(["Точное значение (SciPy)", real_val[0], real_val[1]])
+            table.add_row(["КФ Гаусса", gauss_val, abs(gauss_val - real_val[0])])
+            print(f"N={i}")
+            print("Узлы и коэффициенты")
+            print(list(zip(points, coefficients)))
+            print(table, end="\n\n")
+
+        is_running = (
+            True
+            if input("Желаете ли вы ввести новые значения? [y/yes/да] ").lower()
+            in ["y", "yes", "да"]
+            else False
         )
-        points = map(
-            lambda t: (right_bound - left_bound) / 2 * t
-            + (left_bound + right_bound) / 2,
-            roots,
-        )
-
-        gauss_val = calculate_gauss(i, left_bound, right_bound, f)
-        table = PrettyTable()
-        table.field_names = ["Метод", "Значение", "Погрешность"]
-        table.add_row(["Точное значение (SciPy)", real_val[0], real_val[1]])
-        table.add_row(["КФ Гаусса", gauss_val, abs(gauss_val - real_val[0])])
-        print(f"N={i}")
-        print("Узлы и коэффициенты")
-        print(list(zip(points, coefficients)))
-        print(table, end="\n\n")
 
 
 if __name__ == "__main__":
