@@ -1,9 +1,8 @@
 import numpy as np
-import numpy.typing as npt
 from scipy import linalg
 
 
-def spectral(matrix: npt.ArrayLike) -> float:
+def spectral(matrix: np.ndarray) -> float:
     try:
         inverse = linalg.inv(matrix)
     except linalg.LinAlgError:
@@ -11,13 +10,13 @@ def spectral(matrix: npt.ArrayLike) -> float:
     return linalg.norm(matrix) * linalg.norm(inverse)
 
 
-def volume(matrix: npt.ArrayLike) -> float:
+def volume(matrix: np.ndarray) -> float:
     det = linalg.det(matrix)
     row_norms = linalg.norm(matrix, axis=1)
     return np.prod(row_norms) / abs(det)
 
 
-def angle(matrix: npt.ArrayLike) -> float:
+def angle(matrix: np.ndarray) -> float:
     try:
         inverse = linalg.inv(matrix)
     except linalg.LinAlgError:
