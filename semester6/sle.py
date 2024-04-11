@@ -83,7 +83,6 @@ def _inner_simple_iteration(
     big_b: np.ndarray,
     c: np.ndarray,
     eps: float = 10e-6,
-    message_for_iteration_count: str = None,
 ) -> tuple[np.ndarray, int]:
     norm_big_b = linalg.norm(big_b)
 
@@ -98,9 +97,6 @@ def _inner_simple_iteration(
         diff = norm_big_b / (1 - norm_big_b) * linalg.norm(x - prev_x)
         counter += 1
 
-    if message_for_iteration_count is not None:
-        print(message_for_iteration_count, counter)
-
     return x, counter
 
 
@@ -108,7 +104,6 @@ def _solve_simple_iteration(
     a: np.ndarray,
     b: np.ndarray,
     eps: float = 10e-6,
-    message_for_iteration_count: str = None,
 ) -> tuple[np.ndarray, int]:
     if utils.is_diagonally_dominant(a):
         big_b, c = _generate_big_b_c_diagonally_dominant(a, b)
@@ -117,14 +112,13 @@ def _solve_simple_iteration(
     else:
         raise LinAlgError
 
-    return _inner_simple_iteration(big_b, c, eps, message_for_iteration_count)
+    return _inner_simple_iteration(big_b, c, eps)
 
 
 def _solve_seidel(
     a: np.ndarray,
     b: np.ndarray,
     eps: float = 10e-6,
-    message_for_iteration_count: str = None,
 ) -> tuple[np.ndarray, int]:
     d = np.tril(np.triu(a))
     l = np.tril(a) - d
@@ -135,7 +129,7 @@ def _solve_seidel(
     big_b = (-imm_matrix) @ r
     c = imm_matrix @ b
 
-    return _inner_simple_iteration(big_b, c, eps, message_for_iteration_count)
+    return _inner_simple_iteration(big_b, c, eps)
 
 
 def solve(
@@ -143,12 +137,11 @@ def solve(
     b: np.ndarray,
     method: SolveMethod = SolveMethod.QR,
     eps: float = 10e-6,
-    message_for_iteration_count: str = None,
 ) -> Union[np.ndarray, tuple[np.ndarray, int]]:
     match method:
         case SolveMethod.QR:
             return _solve_qr(a, b), 0
         case SolveMethod.SimpleIteration:
-            return _solve_simple_iteration(a, b, eps, message_for_iteration_count)
+            return _solve_simple_iteration(a, b, eps)
         case SolveMethod.Seidel:
-            return _solve_seidel(a, b, eps, message_for_iteration_count)
+            return _solve_seidel(a, b, eps)
