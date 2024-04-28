@@ -4,7 +4,8 @@ import numpy as np
 from scipy import linalg
 import numpy.typing as npt
 from dataclasses import dataclass
-import scipy.sparse as sparse
+from scipy import sparse
+from scipy import integrate
 
 
 @dataclass
@@ -117,3 +118,68 @@ def solve_fdm(
         norms.append(norm)
 
     return discretization, approx, (ns, norms)
+
+
+def solve_galerkin(
+    ode: Ode,
+    n: int,
+    coord_system: list[
+        tuple[
+            Callable[[float], float], Callable[[float], float], Callable[[float], float]
+        ]
+    ],
+) -> Callable[[float], float]:
+    if n + 1 != len(coord_system):
+        raise Exception("n + 1 != len(coord_system)")
+
+    a = sparse.dok_array((n, n))
+    b = sparse.dok_array((n, 1))
+
+    for i in range(n):
+        for j in range(n):
+            a[i, j] = integrate.quad(
+                lambda x: coord_system[i][0](x)
+                * (
+                    -ode.p(x) * coord_system[j][2](x)
+                    + ode.q(x) * coord_system[j][1](x)
+                    + ode.r(x) * coord_system[j][0](x)
+                ),
+                -1,
+                1,
+            )[0]
+        b[i] = integrate.quad(lambda x: ode.f(x) * coord_system[i][0](x), ode.a, ode.b)[
+            0
+        ]
+
+    sln = sparse.linalg.spsolve(a.tocsr(), b.tocsr())
+
+    return lambda x: sum(sln[i] * coord_system[i][0](x) for i in range(sln.shape[0]))
+
+
+def solve_collocation(
+    ode: Ode,
+    roots: npt.NDArray[float],
+    n: int,
+    coord_system: list[
+        tuple[
+            Callable[[float], float], Callable[[float], float], Callable[[float], float]
+        ]
+    ],
+) -> Callable[[float], float]:
+    if n + 1 != len(coord_system):
+        raise Exception("n + 1 != len(coord_system)")
+    a = sparse.dok_array((n, n))
+    b = sparse.dok_array((n, 1))
+
+    for i in range(n):
+        for j in range(n):
+            x = roots[i]
+            a[i, j] = (
+                -ode.p(x) * coord_system[j][2](x)
+                + ode.q(x) * coord_system[j][1](x)
+                + ode.r(x) * coord_system[j][0](x)
+            )
+        b[i] = ode.f(roots[i])
+
+    sln = sparse.linalg.spsolve(a.tocsr(), b.tocsr())
+    return lambda x: sum(sln[i] * coord_system[i][0](x) for i in range(sln.shape[0]))
