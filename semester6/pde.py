@@ -93,7 +93,7 @@ def _solve_implicit(
         b = sparse.dok_array((n + 1, 1))
         b[0] = pde.mu1(ts[j])
         for i in range(1, n):
-            b[i] = approx[j - 1, i] + t *pde.f(xs[i], ts[j])
+            b[i] = approx[j - 1, i] + t * pde.f(xs[i], ts[j])
         b[n] = pde.mu2(ts[j])
 
         new_approx = sparse.linalg.spsolve(a, b.tocsr())
