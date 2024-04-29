@@ -2,7 +2,7 @@
 <project version="4">
   <component name="Black">
     <option name="enabledOnReformat" value="true" />
-    <option name="sdkName" value="Poetry (spbu-computational-workshop)" />
+    <option name="sdkName" value="Poetry (spbu-computational-workshop) (4)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Poetry (spbu-computational-workshop) (3)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Poetry (spbu-computational-workshop) (4)" project-jdk-type="Python SDK" />
 </project>
