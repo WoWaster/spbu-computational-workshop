@@ -48,8 +48,8 @@ def _gen_a_b(
     a[0, 2] = 1 / 2 * ode.alpha2
     b[0] = h * ode.alpha
     for i in range(1, n - 1):
-        a[i, i - 1] = -ode.p(discretization[i]) - ode.p(discretization[i]) * h / 2
-        a[i, i + 1] = -ode.p(discretization[i]) + ode.p(discretization[i]) * h / 2
+        a[i, i - 1] = -ode.p(discretization[i]) - ode.q(discretization[i]) * h / 2
+        a[i, i + 1] = -ode.p(discretization[i]) + ode.q(discretization[i]) * h / 2
         a[i, i] = -(a[i, i - 1] + a[i, i + 1] - h**2 * ode.r(discretization[i]))
         b[i] = h**2 * ode.f(discretization[i])
     a[n - 1, n - 3] = 1 / 2 * ode.beta2
